@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DanaCerdas</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CSS VARIABLES & THEMES --- */
+        :root {
+            --transition-speed: 0.3s;
+            --brand-primary: #0ea5e9; 
+            --brand-secondary: #10b981; 
+            --brand-accent: #6366f1; 
+            --gradient-header: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-input: #334155;
+            --text-main: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+            --col-tabungan: #10b981;
+            --col-saham: #0ea5e9;
+            --col-kripto: #8b5cf6;
+            --col-reksadana: #f59e0b;
+            --col-obligasi: #06b6d4;
+        }
+
+        /* Light Mode Override - CSS ONLY */
+        body.light-mode {
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-input: #f8fafc;
+            --text-main: #0f172a;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            --gradient-header: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);
+        }
+
+        /* --- RESET & BASE STYLES --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+            padding-bottom: 4rem;
+        }
+
+        /* --- HEADER & NAVIGATION --- */
+        header {
+            background: var(--gradient-header);
+            padding: 1.2rem 0;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom:1px solid rgba(255,255,255,0.05);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: white;
+            font-weight: 800; 
+            font-size: 1.4rem;
+            letter-spacing: -0.5px;
+            text-transform: uppercase; 
+        }
+
+        .logo-svg {
+            width: 50px;
+            height: 32px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+            transition: transform 0.3s;
+        }
+        .brand:hover .logo-svg { transform: scale(1.05); }
+
+        .nav-settings {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lang-select {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .lang-select:hover { background: rgba(255, 255, 255, 0.2); }
+        .lang-select option { color: #0f172a; }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 8px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            color: rgba(255,255,255,0.9);
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+        .theme-toggle i { font-size: 1rem; }
+
+        /* --- LAYOUT UTILITIES --- */
+        main { margin-top: 2rem; }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .section-title i { color: var(--brand-primary); }
+
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s, box-shadow 0.2s, background-color var(--transition-speed);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(14, 165, 233, 0.3); 
+        }
+
+        /* --- FORM LAYOUT --- */
+        .input-group-grid {
+            display: grid;
+            grid-template-columns: auto 1fr; 
+            gap: 1.5rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            background: rgba(255,255,255,0.02);
+            padding: 1rem;
+            border-radius: 16px;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .input-group-grid:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: var(--border-color);
+        }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-input);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--brand-primary);
+            font-size: 1.25rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .input-group-grid:hover .icon-box {
+            transform: translateY(-2px);
+            color: var(--brand-secondary);
+        }
+
+        .input-content { width: 100%; }
+
+        .input-content label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3px;
+        }
+
+        .input-wrapper-mod { position: relative; }
+
+        .input-symbol {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--brand-secondary);
+            font-weight: 700;
+            font-size: 0.9rem;
+            z-index: 2;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 12px 12px 12px 36px; 
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 1rem;
+            transition: all 0.2s;
+            appearance: none;
+            font-weight: 500;
+        }
+        
+        select {
+            padding-left: 14px; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
+        }
+
+        input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+            background-color: var(--bg-card);
+        }
+
+        /* --- MODE TOGGLE (ALLOCATION) --- */
+        .mode-switch {
+            display: flex;
+            background: var(--bg-input);
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .mode-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .mode-btn.active {
+            background: var(--brand-secondary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        /* --- DASHBOARD CARDS (SUMMARY) --- */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover { transform: translateY(-3px); }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+        }
+        
+        .stat-card.income::before { background: var(--brand-secondary); }
+        .stat-card.expense::before { background: var(--danger-color); }
+        .stat-card.balance::before { background: var(--brand-primary); }
+
+        .stat-label { font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase; }
+        .stat-value { font-size: 1.4rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; line-height: 1.2; }
+        .stat-value.green { color: var(--brand-secondary); }
+        .stat-value.red { color: var(--danger-color); }
+
+        /* --- ALLOCATION VISUALS --- */
+        .allocation-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding:1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .allocation-row:last-child { border-bottom: none; }
+
+        .alloc-info { display: flex; align-items: center; gap: 12px; flex: 1; }
+        .alloc-badge { width: 8px; height: 8px; border-radius: 50%; }
+        .alloc-name { font-weight: 600; font-size: 0.95rem; }
+        
+        .alloc-input-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 180px;
+        }
+        
+        .alloc-percent-wrapper {
+            position: relative;
+            width: 80px;
+        }
+        
+        .alloc-percent-wrapper input {
+            padding: 6px 10px 6px 25px; text-align: right; font-size: 0.9rem;
+            border-radius: 8px;
+        }
+        
+        .alloc-percent-wrapper span {
+            position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+            font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;
+        }
+
+        .alloc-value {
+            width: 110px;
+            text-align: right;
+            font-weight: 700;
+            font-size: 0.85rem; 
+            color: var(--text-secondary);
+        }
+
+        /* Progress Bars */
+        .stacked-bar {
+            height: 24px;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            margin-bottom: 1.5rem;
+            background: var(--bg-input);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .stack-seg { height: 100%; transition: width 0.5s ease; position: relative; }
+        .stack-seg:hover { filter: brightness(1.2); cursor: help; }
+
+        /* --- ALERTS & TIPS --- */
+        .alert {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            border-left: 4px solid;
+            background: var(--bg-input);
+        }
+        .alert-danger { border-color: var(--danger-color); color: var(--danger-color); }
+        .alert-info { border-color: var(--brand-primary); color: var(--brand-primary); background: rgba(14, 165, 233, 0.05); }
+        .alert i { font-size: 1.2rem; }
+
+        .tips-box {
+            background: linear-gradient(90deg, rgba(16, 185, 129, 0.05) 0%, rgba(16, 185, 129, 0) 100%);
+            border-left: 4px solid var(--brand-secondary);
+            padding: 1.25rem;
+            margin-top: 1rem;
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .tips-box i { color: var(--brand-secondary); margin-top: 3px; }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+            background: var(--bg-card);
+        }
+
+        .creator-credit {
+            font-weight: 700;
+            color: var(--brand-primary);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(14, 165, 233, 0.1);
+            border-radius: 30px;
+            margin-bottom: 1rem;
+        }
+
+        .brand-footer {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-primary { background: var(--brand-primary); color: white; }
+        .btn-primary:hover { background: #0284c7; transform: translateY(-1px); }
+        
+        .btn-outline { 
+            background: transparent; border: 1px solid var(--brand-secondary); 
+            color: var(--brand-secondary); font-size: 0.75rem; padding: 4px 12px; border-radius: 6px;
+        }
+        .btn-outline:hover { background: rgba(16, 185, 129, 0.1); }
+
+        .btn-reset {
+            width: 100%; justify-content: center; background: var(--danger-color); color: white; margin-top: 2rem;
+        }
+        .btn-reset:hover { background: #dc2626; transform: translateY(-2px); }
+
+        /* --- EXPENSE SUB-CATEGORIES --- */
+        .sub-cat {
+            background: var(--bg-input);
+            padding: 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+        .sub-cat h4 { color: var(--text-main); margin-bottom: 0.8rem; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; font-weight: 700; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-settings { width: 100%; justify-content: space-between; margin-top: 10px; }
+            .input-group-grid { grid-template-columns: 1fr; gap: 1rem; text-align: center; }
+            .icon-box { margin: 0 auto; width: 40px; height: 40px; }
+            .allocation-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .alloc-input-group { width: 100%; justify-content: space-between; }
+            .stat-value { font-size: 1.2rem; } 
+        }
+    </style>
+</head>
+<body class="dark-mode"> 
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-wrapper">
+            <div class="brand">
+                <!-- Custom SVG Logo -->
+                <svg class="logo-svg" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#1e293b;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#0f172a;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <rect x="2" y="2" width="96" height="56" rx="8" fill="url(#cardGrad)" stroke="#334155" stroke-width="1" />
+                    <rect x="12" y="18" width="14" height="10" rx="2" fill="#f59e0b" stroke="#d97706" stroke-width="0.5" />
+                    <line x1="15" y1="21" x2="23" y2="21" stroke="#d97706" stroke-width="0.5" />
+                    <line x1="19" y1="18" x2="19" y2="28" stroke="#d97706" stroke-width="0.5" />
+                    <path d="M 75 30 Q 85 30 85 20" stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none" stroke-linecap="round" />
+                    <path d="M 78 34 Q 92 34 92 16" stroke="rgba(255,255,255,0.6)" stroke-width="2" fill="none" stroke-linecap="round" />
+                    <rect x="12" y="40" width="30" height="4" rx="1" fill="rgba(255,255,255,0.5)" />
+                    <rect x="46" y="40" width="4" height="4" rx="1" fill="#ef4444" />
+                    <rect x="52" y="40" width="4" height="4" rx="1" fill="#fbbf24" />
+                </svg>
+                <span data-i18n="header_brand">DanaCerdas</span>
+            </div>
+            
+            <div class="nav-settings">
+                <!-- Language Selector -->
+                <select id="lang-selector" class="lang-select" onchange="changeLanguage(this.value)">
+                    <option value="id" data-i18n="opt_id">Bahasa Indonesia</option>
+                    <option value="en" data-i18n="opt_en">English</option>
+                    <option value="de" data-i18n="opt_de">Deutsch</option>
+                    <option value="ms" data-i18n="opt_ms">Bahasa Melayu</option>
+                    <option value="ja" data-i18n="opt_ja">日本語 (Japanese)</option>
+                </select>
+
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fa-solid fa-moon" id="theme-icon"></i>
+                    <span data-i18n="nav_dark_mode">Dark Mode</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- Summary Dashboard -->
+        <div class="summary-grid">
+            <div class="stat-card income">
+                <div class="stat-label" data-i18n="card_income_lbl">Total Pemasukan</div>
+                <div class="stat-value green" id="disp-income">Rp 0</div>
+            </div>
+            <div class="stat-card expense">
+                <div class="stat-label" data-i18n="card_expense_lbl">Total Pengeluaran</div>
+                <div class="stat-value red" id="disp-expense">Rp 0</div>
+            </div>
+            <div class="stat-card balance">
+                <div class="stat-label" data-i18n="card_balance_lbl">Sisa Dana</div>
+                <div class="stat-value" id="disp-balance" style="color: var(--brand-primary);">Rp 0</div>
+            </div>
+        </div>
+
+        <div class="alert alert-danger" id="alert-balance" style="display:none;">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span data-i18n="alert_deficit">Peringatan: Pengeluaran melebihi batas aman!</span>
+        </div>
+
+        <div class="form-grid">
+            <!-- Income Card -->
+            <section class="card">
+                <div class="section-title"><i class="fa-solid fa-sack-dollar"></i> <span data-i18n="sec_income">Sumber Dana</span></div>
+                
+                <!-- Mata Uang -->
+                <div class="input-group-grid">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-earth-asia"></i>
+                    </div>
+                    <div class="input-content">
+                        <label data-i18n="lbl_currency">Mata Uang</label>
+                        <div class="input-wrapper-mod">
+                            <select id="currency" class="currency-select">
+                                <option value="IDR" data-i18n="curr_idr">IDR – Indonesia (Rp)</option>
+                                <option value="MYR" data-i18n="curr_myr">MYR – Malaysia (RM)</option>
+                                <option value="USD" data-i18n="curr_usd">USD – Amerika Serikat ($)</option>
+                                <option value="EUR" data-i18n="curr_eur">EUR – Uni Eropa (€)</option>
+                                <option value="GBP" data-i18n="curr_gbp">GBP – Inggris (£)</option>
+                                <option value="JPY" data-i18n="curr_jpy">JPY – Jepang (¥)</option>
+                                <option value="SGD" data-i18n="curr_sgd">SGD – Singapura (S$)</option>
+                                <option value="AUD" data-i18n="curr_aud">AUD – Australia (A$)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gaji -->
+                <div class="input-group-grid">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-briefcase"></i>
+                    </div>
+                    <div class="input-content">
+                        <label data-i18n="lbl_salary">Gaji Bulanan</label>
+                        <div class="input-wrapper-mod">
+                            <span class="input-symbol" id="sym-salary">Rp</span>
+                            <input type="number" id="salary" placeholder="0" oninput="calculateAll()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tambahan -->
+                <div class="input-group-grid">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-coins"></i>
+                    </div>
+                    <div class="input-content">
+                        <label data-i18n="lbl_extra">Pemasukan Tambahan</label>
+                        <div class="input-wrapper-mod">
+                            <span class="input-symbol" id="sym-extra">Rp</span>
+                            <input type="number" id="extra" placeholder="0" oninput="calculateAll()">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Expenses Card -->
+            <section class="card">
+                <div class="section-title"><i class="fa-solid fa-credit-card"></i> <span data-i18n="sec_expenses">Aliran Keluar</span></div>
+                
+                <div class="sub-cat">
+                    <h4><i class="fa-solid fa-house-chimney"></i> <span data-i18n="lbl_primary">Kebutuhan Pokok</span></h4>
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom:0;">
+                        <div class="input-wrapper-mod"><span class="input-symbol" style="font-size:0.8rem; left:10px;">Rp</span><input class="expense-input primary" type="number" data-i18n-placeholder="ph_food" placeholder="Makan" oninput="calculateAll()"></div>
+                        <div class="input-wrapper-mod"><span class="input-symbol" style="font-size:0.8rem; left:10px;">Rp</span><input class="expense-input primary" type="number" data-i18n-placeholder="ph_house" placeholder="Rumah" oninput="calculateAll()"></div>
+                        <div class="input-wrapper-mod"><span class="input-symbol" style="font-size:0.8rem; left:10px;">Rp</span><input class="expense-input primary" type="number" data-i18n-placeholder="ph_util" placeholder="Listrik/Air" oninput="calculateAll()"></div>
+                        <div class="input-wrapper-mod"><span class="input-symbol" style="font-size:0.8rem; left:10px;">Rp</span><input class="expense-input primary" type="number" data-i18n-placeholder="ph_trans" placeholder="Transport" oninput="calculateAll()"></div>
+                    </div>
+                </div>
+
+                <div class="sub-cat">
+                    <h4><i class="fa-solid fa-film"></i> <span data-i18n="lbl_lifestyle">Gaya Hidup</span></h4>
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom:0;">
+                        <div class="input-wrapper-mod"><span class="input-symbol" style="font-size:0.8rem; left:10px;">Rp</span><input class="expense-input secondary" type="number" data-i18n-placeholder="ph_net" placeholder="Internet" oninput="calculateAll()"></div>
+                        <div class="input-wrapper-mod"><span class="input-symbol" style="font-size:0.8rem; left:10px;">Rp</span><input class="expense-input secondary" type="number" data-i18n-placeholder="ph_ent" placeholder="Hiburan" oninput="calculateAll()"></div>
+                        <div class="input-wrapper-mod"><span class="input-symbol" style="font-size:0.8rem; left:10px;">Rp</span><input class="expense-input tertiary" type="number" data-i18n-placeholder="ph_life" placeholder="Lifestyle" oninput="calculateAll()"></div>
+                        <div class="input-wrapper-mod"><span class="input-symbol" style="font-size:0.8rem; left:10px;">Rp</span><input class="expense-input tertiary" type="number" data-i18n-placeholder="ph_hobby" placeholder="Hobi" oninput="calculateAll()"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Allocation Card -->
+        <section class="card">
+            <div class="section-title">
+                <span><i class="fa-solid fa-chart-pie"></i> <span data-i18n="sec_alloc">Alokasi Aset Cerdas</span></span>
+                <div style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 400; text-transform: none;" id="alloc-badge">Total: 0%</div>
+            </div>
+
+            <!-- Mode Toggle -->
+            <div class="mode-switch">
+                <button class="mode-btn active" id="btn-auto" onclick="setMode('auto')"><span data-i18n="mode_auto">Otomatis (Seimbang)</span></button>
+                <button class="mode-btn" id="btn-manual" onclick="setMode('manual')"><span data-i18n="mode_manual">Manual Kustom</span></button>
+            </div>
+
+            <div id="auto-tip" class="alert alert-info" style="padding: 0.8rem; font-size: 0.85rem;">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span data-i18n="msg_algo">Algoritma DanaCerdas menyusun portofolio seimbang untuk Anda.</span>
+                <button class="btn btn-outline" style="margin-left: auto; font-size: 0.7rem;" onclick="applyDefaults()"><span data-i18n="btn_reset_def">Reset Default</span></button>
+            </div>
+
+            <div id="alloc-alert" class="alert alert-danger" style="display:none;">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span data-i18n="msg_alloc_err">Total alokasi harus 100%</span>
+            </div>
+
+            <!-- Stacked Bar -->
+            <div class="stacked-bar">
+                <div class="stack-seg" id="bar-tab" style="width:0%; background:var(--col-tabungan)" title="Tabungan"></div>
+                <div class="stack-seg" id="bar-saham" style="width:0%; background:var(--col-saham)" title="Saham"></div>
+                <div class="stack-seg" id="bar-kripto" style="width:0%; background:var(--col-kripto)" title="Kripto"></div>
+                <div class="stack-seg" id="bar-reksa" style="width:0%; background:var(--col-reksadana)" title="Reksadana"></div>
+                <div class="stack-seg" id="bar-oblig" style="width:0%; background:var(--col-obligasi)" title="Obligasi"></div>
+            </div>
+
+            <!-- Input Rows -->
+            <div id="alloc-rows">
+                <!-- Tabungan -->
+                <div class="allocation-row">
+                    <div class="alloc-info">
+                        <div class="alloc-badge" style="background:var(--col-tabungan)"></div>
+                        <div class="alloc-name" data-i18n="lbl_savings">Tabungan</div>
+                    </div>
+                    <div class="alloc-input-group">
+                        <div class="alloc-percent-wrapper">
+                            <span>%</span>
+                            <input type="number" class="alloc-inp" id="in-tab" placeholder="0" oninput="calcAlloc()">
+                        </div>
+                        <div class="alloc-value" id="val-tab">-</div>
+                    </div>
+                </div>
+                <!-- Saham -->
+                <div class="allocation-row">
+                    <div class="alloc-info">
+                        <div class="alloc-badge" style="background:var(--col-saham)"></div>
+                        <div class="alloc-name" data-i18n="lbl_stocks">Saham</div>
+                    </div>
+                    <div class="alloc-input-group">
+                        <div class="alloc-percent-wrapper">
+                            <span>%</span>
+                            <input type="number" class="alloc-inp" id="in-saham" placeholder="0" oninput="calcAlloc()">
+                        </div>
+                        <div class="alloc-value" id="val-saham">-</div>
+                    </div>
+                </div>
+                <!-- Kripto -->
+                <div class="allocation-row">
+                    <div class="alloc-info">
+                        <div class="alloc-badge" style="background:var(--col-kripto)"></div>
+                        <div class="alloc-name" data-i18n="lbl_crypto">Kripto</div>
+                    </div>
+                    <div class="alloc-input-group">
+                        <div class="alloc-percent-wrapper">
+                            <span>%</span>
+                            <input type="number" class="alloc-inp" id="in-kripto" placeholder="0" oninput="calcAlloc()">
+                        </div>
+                        <div class="alloc-value" id="val-kripto">-</div>
+                    </div>
+                </div>
+                <!-- Reksadana -->
+                <div class="allocation-row">
+                    <div class="alloc-info">
+                        <div class="alloc-badge" style="background:var(--col-reksadana)"></div>
+                        <div class="alloc-name" data-i18n="lbl_mutual">Reksadana</div>
+                    </div>
+                    <div class="alloc-input-group">
+                        <div class="alloc-percent-wrapper">
+                            <span>%</span>
+                            <input type="number" class="alloc-inp" id="in-reksa" placeholder="0" oninput="calcAlloc()">
+                        </div>
+                        <div class="alloc-value" id="val-reksa">-</div>
+                    </div>
+                </div>
+                <!-- Obligasi -->
+                <div class="allocation-row">
+                    <div class="alloc-info">
+                        <div class="alloc-badge" style="background:var(--col-obligasi)"></div>
+                        <div class="alloc-name" data-i18n="lbl_bonds">Obligasi</div>
+                    </div>
+                    <div class="alloc-input-group">
+                        <div class="alloc-percent-wrapper">
+                            <span>%</span>
+                            <input type="number" class="alloc-inp" id="in-oblig" placeholder="0" oninput="calcAlloc()">
+                        </div>
+                        <div class="alloc-value" id="val-oblig">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tips-box" id="tips-box">
+                <i class="fa-solid fa-lightbulb"></i>
+                <span id="tips-text" data-i18n="tip_welcome">DanaCerdas siap menganalisis keuangan Anda. Mulai input data sekarang.</span>
+            </div>
+
+            <button class="btn btn-reset" onclick="resetAll()">
+                <i class="fa-solid fa-rotate-right"></i> <span data-i18n="btn_reset_all">Reset Semua Data</span>
+            </button>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="brand-footer" data-i18n="header_brand">DanaCerdas</div>
+            
+            <div class="creator-credit">
+                <i class="fa-solid fa-code"></i>
+                <span data-i18n="footer_credit">Dibuat oleh FIDZIKRILLAH PROJECT</span>
+            </div>
+            
+            <div style="margin-top: 1.5rem; opacity: 0.6; font-size: 0.85rem; letter-spacing: 0.3px;">
+                <span data-i18n="footer_rights">&copy; 2026 fidzikrillah.my.id project – All Rights Reserved</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. LANGUAGE DICTIONARY SYSTEM (OBJECT/JSON) ---
+        const languages = {
+            id: {
+                header_brand: "DanaCerdas", opt_id: "Bahasa Indonesia", opt_en: "English", opt_de: "Deutsch", opt_ms: "Bahasa Melayu", opt_ja: "日本語 (Japanese)",
+                nav_dark_mode: "Dark Mode", nav_light_mode: "Light Mode",
+                card_income_lbl: "Total Pemasukan", card_expense_lbl: "Total Pengeluaran", card_balance_lbl: "Sisa Dana", alert_deficit: "Peringatan: Pengeluaran melebihi batas aman!",
+                sec_income: "Sumber Dana", lbl_currency: "Mata Uang", lbl_salary: "Gaji Bulanan", lbl_extra: "Pemasukan Tambahan",
+                sec_expenses: "Aliran Keluar", lbl_primary: "Kebutuhan Pokok", lbl_lifestyle: "Gaya Hidup",
+                sec_alloc: "Alokasi Aset Cerdas", mode_auto: "Otomatis (Seimbang)", mode_manual: "Manual Kustom",
+                msg_algo: "Algoritma DanaCerdas menyusun portofolio seimbang untuk Anda.", btn_reset_def: "Reset Default", msg_alloc_err: "Total alokasi harus 100%",
+                lbl_savings: "Tabungan", lbl_stocks: "Saham", lbl_crypto: "Kripto", lbl_mutual: "Reksadana", lbl_bonds: "Obligasi",
+                btn_reset_all: "Reset Semua Data", tip_welcome: "DanaCerdas siap menganalisis keuangan Anda. Mulai input data sekarang.",
+                tip_deficit: "Defisit terdeteksi. DanaCerdas menyarankan peninjauan ulang pengeluaran gaya hidup.",
+                tip_incomplete: "Lengkapi persentase alokasi hingga 100% agar perencanaan aset optimal.",
+                tip_risky: "Portofolio agresif terdeteksi (Kripto >20%). Pastikan profil risiko Anda sesuai.",
+                tip_low_savings: "Rekomendasi DanaCerdas: Tingkatkan tabungan minimal 10% untuk perlindungan finansial.",
+                tip_auto: "Mode Otomatis aktif. Portofolio seimbang telah diterapkan oleh sistem.", tip_manual: "Konfigurasi portofolio Anda valid. Konsistensi adalah kunci kesuksesan keuangan.",
+                ph_food: "Makan", ph_house: "Rumah", ph_util: "Listrik/Air", ph_trans: "Transport", ph_net: "Internet", ph_ent: "Hiburan", ph_life: "Lifestyle", ph_hobby: "Hobi",
+                curr_idr: "IDR – Indonesia (Rp)", curr_myr: "MYR – Malaysia (RM)", curr_usd: "USD – Amerika Serikat ($)", curr_eur: "EUR – Uni Eropa (€)", curr_gbp: "GBP – Inggris (£)", curr_jpy: "JPY – Jepang (¥)", curr_sgd: "SGD – Singapura (S$)", curr_aud: "AUD – Australia (A$)",
+                footer_credit: "Dibuat oleh FIDZIKRILLAH PROJECT", footer_rights: "&copy; 2026 fidzikrillah.my.id project – All Rights Reserved"
+            },
+            en: {
+                header_brand: "DanaCerdas", opt_id: "Bahasa Indonesia", opt_en: "English", opt_de: "Deutsch", opt_ms: "Bahasa Melayu", opt_ja: "日本語 (Japanese)",
+                nav_dark_mode: "Dark Mode", nav_light_mode: "Light Mode",
+                card_income_lbl: "Total Income", card_expense_lbl: "Total Expenses", card_balance_lbl: "Remaining Funds", alert_deficit: "Warning: Expenses exceed safety limit!",
+                sec_income: "Source of Funds", lbl_currency: "Currency", lbl_salary: "Monthly Salary", lbl_extra: "Extra Income",
+                sec_expenses: "Expenses", lbl_primary: "Primary Needs", lbl_lifestyle: "Lifestyle",
+                sec_alloc: "Smart Asset Allocation", mode_auto: "Auto (Balanced)", mode_manual: "Custom Manual",
+                msg_algo: "DanaCerdas algorithm sets up a balanced portfolio for you.", btn_reset_def: "Reset Default", msg_alloc_err: "Allocation total must be 100%",
+                lbl_savings: "Savings", lbl_stocks: "Stocks", lbl_crypto: "Crypto", lbl_mutual: "Mutual Funds", lbl_bonds: "Bonds",
+                btn_reset_all: "Reset All Data", tip_welcome: "DanaCerdas is ready to analyze your finances. Start inputting data now.",
+                tip_deficit: "Deficit detected. DanaCerdas suggests reviewing your lifestyle expenses.",
+                tip_incomplete: "Complete allocation percentage to 100% for optimal asset planning.",
+                tip_risky: "Aggressive portfolio detected (Crypto >20%). Ensure your risk profile matches.",
+                tip_low_savings: "DanaCerdas Recommendation: Increase savings to at least 10% for financial protection.",
+                tip_auto: "Auto mode active. A balanced portfolio has been applied by the system.", tip_manual: "Your portfolio configuration is valid. Consistency is the key to financial success.",
+                ph_food: "Food", ph_house: "Housing", ph_util: "Utilities", ph_trans: "Transport", ph_net: "Internet", ph_ent: "Entertainment", ph_life: "Lifestyle", ph_hobby: "Hobbies",
+                curr_idr: "IDR – Indonesia (Rp)", curr_myr: "MYR – Malaysia (RM)", curr_usd: "USD – United States ($)", curr_eur: "EUR – Europe (€)", curr_gbp: "GBP – UK (£)", curr_jpy: "JPY – Japan (¥)", curr_sgd: "SGD – Singapore (S$)", curr_aud: "AUD – Australia (A$)",
+                footer_credit: "Created by FIDZIKRILLAH PROJECT", footer_rights: "&copy; 2026 fidzikrillah.my.id project – All Rights Reserved"
+            },
+            de: {
+                header_brand: "DanaCerdas", opt_id: "Bahasa Indonesia", opt_en: "English", opt_de: "Deutsch", opt_ms: "Bahasa Melayu", opt_ja: "日本語 (Japanese)",
+                nav_dark_mode: "Dunkler Modus", nav_light_mode: "Heller Modus",
+                card_income_lbl: "Gesamteinkommen", card_expense_lbl: "Gesamtausgaben", card_balance_lbl: "Restbetrag", alert_deficit: "Warnung: Ausgaben überschreiten das Limit!",
+                sec_income: "Finanzquellen", lbl_currency: "Währung", lbl_salary: "Monatsgehalt", lbl_extra: "Zusätzliches Einkommen",
+                sec_expenses: "Ausgaben", lbl_primary: "Grundbedarf", lbl_lifestyle: "Lebensstil",
+                sec_alloc: "Intelligente Anlageallokation", mode_auto: "Automatisch (Ausgewogen)", mode_manual: "Manuell",
+                msg_algo: "Der DanaCerdas-Algorithmus erstellt ein ausgewogenes Portfolio für Sie.", btn_reset_def: "Standard zurücksetzen", msg_alloc_err: "Allokation muss insgesamt 100% betragen",
+                lbl_savings: "Ersparnisse", lbl_stocks: "Aktien", lbl_crypto: "Krypto", lbl_mutual: "Investmentfonds", lbl_bonds: "Anleihen",
+                btn_reset_all: "Alle Daten zurücksetzen", tip_welcome: "DanaCerdas ist bereit, Ihre Finanzen zu analysieren. Beginnen Sie jetzt mit der Dateneingabe.",
+                tip_deficit: "Defizit erkannt. DanaCerdas empfiehlt eine Überprüfung der Ausgaben für den Lebensstil.",
+                tip_incomplete: "Vervollständigen Sie die Allokationsprozentsätze auf 100% für eine optimale Vermögensplanung.",
+                tip_risky: "Aggressives Portfolio erkannt (Krypto >20%). Stellen Sie sicher, dass Ihr Risikoprofil passt.",
+                tip_low_savings: "Empfehlung von DanaCerdas: Erhöhen Sie die Ersparnisse auf mindestens 10% zum finanziellen Schutz.",
+                tip_auto: "Automatischer Modus aktiv. Ein ausgewogenes Portfolio wurde vom System angewendet.", tip_manual: "Ihre Portfolio-Konfiguration ist gültig. Beständigkeit ist der Schlüssel zum finanziellen Erfolg.",
+                ph_food: "Essen", ph_house: "Wohnen", ph_util: "Versorgung", ph_trans: "Verkehr", ph_net: "Internet", ph_ent: "Unterhaltung", ph_life: "Lebensstil", ph_hobby: "Hobbys",
+                curr_idr: "IDR – Indonesien (Rp)", curr_myr: "MYR – Malaysia (RM)", curr_usd: "USD – USA ($)", curr_eur: "EUR – Euro (€)", curr_gbp: "GBP – Großbritannien (£)", curr_jpy: "JPY – Japan (¥)", curr_sgd: "SGD – Singapur (S$)", curr_aud: "AUD – Australien (A$)",
+                footer_credit: "Erstellt von FIDZIKRILLAH PROJECT", footer_rights: "&copy; 2026 fidzikrillah.my.id project – Alle Rechte vorbehalten"
+            },
+            ms: {
+                header_brand: "DanaCerdas", opt_id: "Bahasa Indonesia", opt_en: "English", opt_de: "Deutsch", opt_ms: "Bahasa Melayu", opt_ja: "日本語 (Japanese)",
+                nav_dark_mode: "Mod Gelap", nav_light_mode: "Mod Cerah",
+                card_income_lbl: "Jumlah Pendapatan", card_expense_lbl: "Jumlah Perbelanjaan", card_balance_lbl: "Baki Wang", alert_deficit: "Amaran: Perbelanjaan melebihi had selamat!",
+                sec_income: "Sumber Dana", lbl_currency: "Mata Wang", lbl_salary: "Gaji Bulanan", lbl_extra: "Pendapatan Tambahan",
+                sec_expenses: "Perbelanjaan", lbl_primary: "Kebutuhan Asas", lbl_lifestyle: "Gaya Hidup",
+                sec_alloc: "Peruntukan Aset Pintar", mode_auto: "Automatik (Seimbang)", mode_manual: "Manual Tersuai",
+                msg_algo: "Algoritma DanaCerdas menyusun portfolio seimbang untuk anda.", btn_reset_def: "Tetapkan Semula", msg_alloc_err: "Jumlah peruntukan mestilah 100%",
+                lbl_savings: "Simpanan", lbl_stocks: "Saham", lbl_crypto: "Kripto", lbl_mutual: "Amanah Saham", lbl_bonds: "Bon",
+                btn_reset_all: "Reset Semua Data", tip_welcome: "DanaCerdas sedia menganalisis kewangan anda. Mula masukkan data sekarang.",
+                tip_deficit: "Kekurangan dikesan. DanaCerdas mencadangkan semakan perbelanjaan gaya hidup.",
+                tip_incomplete: "Lengkapkan peratusan peruntukan hingga 100% untuk perancangan aset optimum.",
+                tip_risky: "Portfolio agresif dikesan (Kripto >20%). Pastikan profil risiko anda sesuai.",
+                tip_low_savings: "Cadangan DanaCerdas: Tingkatkan simpanan sekurang-kurangnya 10% untuk perlindungan kewangan.",
+                tip_auto: "Mod automatik aktif. Portfolio seimbang telah digunakan oleh sistem.", tip_manual: "Konfigurasi portfolio anda sah. Konsisten adalah kunci kepada kejayaan kewangan.",
+                ph_food: "Makanan", ph_house: "Perumahan", ph_util: "Utiliti", ph_trans: "Pengangkutan", ph_net: "Internet", ph_ent: "Hiburan", ph_life: "Gaya Hidup", ph_hobby: "Hobi",
+                curr_idr: "IDR – Indonesia (Rp)", curr_myr: "MYR – Malaysia (RM)", curr_usd: "USD – Amerika Syarikat ($)", curr_eur: "EUR – Eropah (€)", curr_gbp: "GBP – UK (£)", curr_jpy: "JPY – Jepun (¥)", curr_sgd: "SGD – Singapura (S$)", curr_aud: "AUD – Australia (A$)",
+                footer_credit: "Dibuat oleh FIDZIKRILLAH PROJECT", footer_rights: "&copy; 2026 fidzikrillah.my.id project – All Rights Reserved"
+            },
+            ja: {
+                header_brand: "DanaCerdas", opt_id: "Bahasa Indonesia", opt_en: "English", opt_de: "Deutsch", opt_ms: "Bahasa Melayu", opt_ja: "日本語 (Japanese)",
+                nav_dark_mode: "ダークモード", nav_light_mode: "ライトモード",
+                card_income_lbl: "総収入", card_expense_lbl: "総支出", card_balance_lbl: "残高", alert_deficit: "警告: 支出が安全な制限を超えています！",
+                sec_income: "資金源", lbl_currency: "通貨", lbl_salary: "月収", lbl_extra: "その他の収入",
+                sec_expenses: "支出", lbl_primary: "生活必需費", lbl_lifestyle: "ライフスタイル",
+                sec_alloc: "スマート資産配分", mode_auto: "自動（バランス）", mode_manual: "手動設定",
+                msg_algo: "DanaCerdasアルゴリズムがバランスの取れたポートフォリオを設定します。", btn_reset_def: "デフォルトに戻す", msg_alloc_err: "配分の合計は100%でなければなりません",
+                lbl_savings: "貯金", lbl_stocks: "株式", lbl_crypto: "暗号資産", lbl_mutual: "投資信託", lbl_bonds: "債券",
+                btn_reset_all: "すべてのデータをリセット", tip_welcome: "DanaCerdasはあなたの財務分析の準備ができています。今すぐデータを入力してください。",
+                tip_deficit: "赤字が検出されました。DanaCerdasはライフスタイル費の見直しをお勧めします。",
+                tip_incomplete: "最適な資産計画のために、配分率を100%まで完成させてください。",
+                tip_risky: "攻撃的なポートフォリオが検出されました（暗号資産 >20%）。リスクプロファイルに合っているか確認してください。",
+                tip_low_savings: "DanaCerdasの推奨: 財務保護のために貯金を少なくとも10%増やしてください。",
+                tip_auto: "自動モードが有効です。システムによってバランスの取れたポートフォリオが適用されました。", tip_manual: "ポートフォリオ構成が有効です。一貫性こそが財政的成功への鍵です。",
+                ph_food: "食費", ph_house: "住居費", ph_util: "水道光熱費", ph_trans: "交通費", ph_net: "インターネット", ph_ent: "娯楽", ph_life: "ライフスタイル", ph_hobby: "趣味",
+                curr_idr: "IDR – インドネシア (Rp)", curr_myr: "MYR – マレーシア (RM)", curr_usd: "USD – アメリカ合衆国 ($)", curr_eur: "EUR – ヨーロッパ (€)", curr_gbp: "GBP – イギリス (£)", curr_jpy: "JPY – 日本 (¥)", curr_sgd: "SGD – シンガポール (S$)", curr_aud: "AUD – オーストラリア (A$)",
+                footer_credit: "FIDZIKRILLAH PROJECTによって作成されました", footer_rights: "&copy; 2026 fidzikrillah.my.id project – All Rights Reserved"
+            }
+        };
+
+        let currentLang = 'id'; // Default language
+
+        // --- 2. CONFIGURATION & STATE ---
+        const currencyData = {
+            IDR: { locale: 'id-ID', symbol: 'Rp' }, MYR: { locale: 'ms-MY', symbol: 'RM' }, USD: { locale: 'en-US', symbol: '$' },
+            EUR: { locale: 'de-DE', symbol: '€' }, GBP: { locale: 'en-GB', symbol: '£' }, JPY: { locale: 'ja-JP', symbol: '¥' },
+            SGD: { locale: 'en-SG', symbol: 'S$' }, AUD: { locale: 'en-AU', symbol: 'A$' }
+        };
+
+        const defaultPreset = { tab: 40, saham: 20, kripto: 5, reksa: 25, oblig: 10 };
+        let currency = 'IDR';
+        let balance = 0;
+        let mode = 'auto'; 
+
+        // --- DOM REFERENCES ---
+        const els = {
+            inputs: document.querySelectorAll('input'), currency: document.getElementById('currency'), symbols: document.querySelectorAll('.input-symbol'),
+            income: document.getElementById('disp-income'), expense: document.getElementById('disp-expense'), bal: document.getElementById('disp-balance'),
+            alertBal: document.getElementById('alert-balance'), alertAlloc: document.getElementById('alloc-alert'), allocBadge: document.getElementById('alloc-badge'),
+            autoTip: document.getElementById('auto-tip'), tipsText: document.getElementById('tips-text'), salary: document.getElementById('salary'), extra: document.getElementById('extra'),
+            allocInp: document.querySelectorAll('.alloc-inp'), bars: [document.getElementById('bar-tab'), document.getElementById('bar-saham'), document.getElementById('bar-kripto'), document.getElementById('bar-reksa'), document.getElementById('bar-oblig')],
+            vals: [document.getElementById('val-tab'), document.getElementById('val-saham'), document.getElementById('val-kripto'), document.getElementById('val-reksa'), document.getElementById('val-oblig')],
+            body: document.body, themeIcon: document.getElementById('theme-icon'), themeText: document.getElementById('theme-text')
+        };
+
+        // --- 3. INIT ---
+        window.onload = () => {
+            loadTheme();
+            loadLanguage(); 
+            applyDefaults(); 
+            calculateAll();
+        };
+
+        // --- 4. LANGUAGE SYSTEM (Core Request) ---
+        function changeLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('userLanguage', lang);
+            updateLanguageText();
+        }
+
+        function loadLanguage() {
+            const savedLang = localStorage.getItem('userLanguage');
+            if (savedLang && languages[savedLang]) {
+                currentLang = savedLang;
+                document.getElementById('lang-selector').value = savedLang;
+            }
+            updateLanguageText();
+        }
+
+        function updateLanguageText() {
+            const data = languages[currentLang];
+            const fallback = languages['id']; // Fallback to ID
+
+            // 1. Update Standard Text Content
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (data[key]) {
+                    el.textContent = data[key];
+                } else if (fallback[key]) {
+                    el.textContent = fallback[key];
+                }
+            });
+
+            // 2. Update Placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (data[key]) {
+                    el.placeholder = data[key];
+                } else if (fallback[key]) {
+                    el.placeholder = fallback[key];
+                }
+            });
+
+            // 3. Update Select Options Text (Special handling)
+            const currencySelect = document.getElementById('currency');
+            Array.from(currencySelect.options).forEach(opt => {
+                const key = opt.getAttribute('data-i18n');
+                if (key && data[key]) {
+                    opt.text = data[key];
+                }
+            });
+            
+            updateTips();
+        }
+
+        // --- 5. THEME LOGIC (CSS ONLY) ---
+        function toggleTheme() {
+            const t = languages[currentLang];
+            if (els.body.classList.contains('dark-mode')) {
+                els.body.classList.remove('dark-mode');
+                els.body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+                updateThemeUI(true);
+            } else {
+                els.body.classList.remove('light-mode');
+                els.body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+                updateThemeUI(false);
+            }
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                els.body.classList.remove('dark-mode');
+                els.body.classList.add('light-mode');
+                updateThemeUI(true);
+            }
+        }
+
+        function updateThemeUI(isLight) {
+            const t = languages[currentLang];
+            els.themeIcon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            const themeSpan = document.querySelector('.theme-toggle span');
+            if(themeSpan) themeSpan.textContent = isLight ? t.nav_light_mode : t.nav_dark_mode;
+        }
+
+        // --- 6. CORE FUNCTIONS ---
+        function formatCur(num) {
+            const conf = currencyData[currency];
+            return new Intl.NumberFormat(conf.locale, {
+                style: 'currency', currency: currency,
+                minimumFractionDigits: 0, maximumFractionDigits: 0
+            }).format(num);
+        }
+
+        function getVal(inp) {
+            let v = parseFloat(inp.value);
+            return isNaN(v) || v < 0 ? 0 : v;
+        }
+
+        // --- 7. CALCULATION ENGINE ---
+        function calculateAll() {
+            const salary = getVal(els.salary);
+            const extra = getVal(els.extra);
+            const totalInc = salary + extra;
+            const expenses = document.querySelectorAll('.expense-input');
+            let totalExp = 0;
+            expenses.forEach(e => totalExp += getVal(e));
+            balance = totalInc - totalExp;
+            
+            els.income.textContent = formatCur(totalInc);
+            els.expense.textContent = formatCur(totalExp);
+            els.bal.textContent = formatCur(balance);
+
+            if (balance < 0) {
+                els.alertBal.style.display = 'flex';
+                els.bal.style.color = 'var(--danger-color)';
+            } else {
+                els.alertBal.style.display = 'none';
+                els.bal.style.color = 'var(--brand-primary)';
+            }
+
+            calcAlloc();
+            updateTips();
+        }
+
+        // --- 8. ALLOCATION LOGIC ---
+        function setMode(m) {
+            mode = m;
+            document.getElementById('btn-auto').classList.toggle('active', m === 'auto');
+            document.getElementById('btn-manual').classList.toggle('active', m === 'manual');
+            els.autoTip.style.display = m === 'auto' ? 'flex' : 'none';
+            
+            if (m === 'auto') applyDefaults();
+            calcAlloc();
+            updateTips();
+        }
+
+        function applyDefaults() {
+            document.getElementById('in-tab').value = defaultPreset.tab;
+            document.getElementById('in-saham').value = defaultPreset.saham;
+            document.getElementById('in-kripto').value = defaultPreset.kripto;
+            document.getElementById('in-reksa').value = defaultPreset.reksa;
+            document.getElementById('in-oblig').value = defaultPreset.oblig;
+            calcAlloc();
+        }
+
+        function calcAlloc() {
+            let totalPct = 0;
+            let pcts = [];
+            
+            els.allocInp.forEach(inp => {
+                let v = getVal(inp);
+                if (v > 100) v = 100;
+                pcts.push(v);
+                totalPct += v;
+            });
+
+            els.allocBadge.textContent = `Total: ${totalPct}%`;
+            els.allocBadge.style.color = totalPct === 100 ? 'var(--brand-secondary)' : 'var(--danger-color)';
+
+            const t = languages[currentLang];
+
+            if (totalPct !== 100) {
+                els.alertAlloc.style.display = 'flex';
+                els.alertAlloc.querySelector('span').textContent = t.msg_alloc_err;
+                els.vals.forEach(el => el.textContent = '-');
+                els.bars.forEach(el => el.style.opacity = '0.3');
+                return;
+            }
+
+            els.alertAlloc.style.display = 'none';
+            els.bars.forEach(el => el.style.opacity = '1');
+            
+            const base = balance > 0 ? balance : 0;
+
+            pcts.forEach((pct, i) => {
+                const nominal = (base * pct) / 100;
+                els.vals[i].textContent = formatCur(nominal);
+                els.bars[i].style.width = pct + '%';
+                els.bars[i].setAttribute('title', `${pct}% - ${formatCur(nominal)}`);
+            });
+            
+            updateTips();
+        }
+
+        function updateTips() {
+            const t = languages[currentLang]; 
+            let tip = "";
+            const totalAlloc = Array.from(els.allocInp).reduce((a, b) => a + getVal(b), 0);
+            const kripto = getVal(document.getElementById('in-kripto'));
+            const tabungan = getVal(document.getElementById('in-tab'));
+
+            if (balance < 0) {
+                tip = t.tip_deficit;
+            } else if (totalAlloc !== 100) {
+                tip = t.tip_incomplete;
+            } else if (kripto > 20) {
+                tip = t.tip_risky;
+            } else if (tabungan < 10) {
+                tip = t.tip_low_savings;
+            } else if (mode === 'auto') {
+                tip = t.tip_auto;
+            } else {
+                tip = t.tip_manual;
+            }
+            els.tipsText.textContent = tip;
+        }
+
+        // --- 9. UTILS ---
+        document.getElementById('currency').addEventListener('change', (e) => {
+            currency = e.target.value;
+            els.symbols.forEach(s => s.textContent = currencyData[currency].symbol);
+            calculateAll();
+            calcAlloc();
+        });
+
+        function resetAll() {
+            els.inputs.forEach(i => i.value = '');
+            currency = 'IDR';
+            document.getElementById('currency').value = 'IDR';
+            els.symbols.forEach(s => s.textContent = 'Rp');
+            setMode('auto');
+            const t = languages[currentLang];
+            els.tipsText.textContent = t.tip_welcome;
+            calculateAll();
+        }
+
+    </script>
+</body>
+</html>
